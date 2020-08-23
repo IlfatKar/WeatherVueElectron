@@ -1,18 +1,55 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+<!--    <HomeNav />-->
+    <main v-if="!this.loading">
+      <h1>Погода в городе {{this.data.name}}</h1>
+      <div id="weather">
+        <Weather :temps="this.data.main" :weather="this.data.weather"/>
+        <Descr :main="this.data.main" :wind="this.data.wind"/>
+      </div>
+    </main>
+    <Loader v-else/>
   </div>
 </template>
 
-<script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
-export default {
-  name: 'Home',
-  components: {
-    HelloWorld
-  }
+<style scoped>
+.home {
+  width: calc(100% - 70px);
+  margin-left: 70px;
 }
+main {
+  padding: 15px 25px;
+}
+#weather {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+}
+</style>
+
+<script>
+import HomeNav from "../components/HomeNav";
+import Weather from "../components/Weather";
+import Descr from '../components/Descr'
+import { mapGetters } from "vuex";
+import Loader from '../components/Loader'
+export default {
+  name: "Home",
+  computed: {
+    ...mapGetters(["data"])
+  },
+  data:() => ({
+    weather: null,
+    loading: true
+  }),
+  components: {
+    Loader,
+    Descr,
+    Weather,
+    HomeNav
+  },
+  async mounted() {
+    await this.$store.dispatch("fetchData");
+    this.loading = false;
+  },
+};
 </script>
