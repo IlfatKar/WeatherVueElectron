@@ -26,16 +26,16 @@
     animation: ldio-rpinwye8j0b 1s linear infinite;
     width: 160px;
     height: 160px;
-    top: 20px;
-    left: 20px;
+    top: 100px;
+    left: calc(50vw - 160px);
+    text-align: center;
     border-radius: 50%;
     box-shadow: 0 4px 0 0 #e15b64;
     transform-origin: 80px 82px;
   }
   .loadingio-eclipse {
-    margin: 0 auto;
-    width: 200px;
-    height: 200px;
+    width: 100%;
+    height: 800px;
     display: inline-block;
     overflow: hidden;
   }

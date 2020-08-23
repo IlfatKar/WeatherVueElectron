@@ -1,71 +1,164 @@
 <template>
-  <nav>
-    <div id="navOpen" class="btn navChild" @click="openNav">
-      <font-awesome-icon icon="bars" size="2x" />
+  <div class="container" :class="{'show': showSidebar}">
+    <div class="control">
+      <font-awesome-icon icon="bars" size="2x" @click="showNav"/>
     </div>
-    <router-link to="/"
-      ><div class="btn navChild" id="navHomePage">
-        <font-awesome-icon icon="home" size="2x" /></div
-    ></router-link>
-    <router-link to="/changeRegion"
-      ><div class="btn navChild" id="navMap">
-        <font-awesome-icon icon="map-marked" size="2x" /></div
-    ></router-link>
-    <router-link to="/settings/settings">
-    <div class="btn navChild" id="navSettings">
-      <font-awesome-icon icon="cog" size="2x" />
-    </div></router-link>
-    <router-link to="/feedback">
-    <div class="btn navChild" id="navFeedback">
-      <font-awesome-icon icon="comment" size="2x" />
-    </div></router-link>
-  </nav>
+    <div class="navigation-icons">
+      <router-link to="/">
+        <font-awesome-icon icon="home" size="2x"/>
+      </router-link>
+      <router-link to="/changeRegion">
+        <font-awesome-icon icon="map-marked" size="2x"/>
+      </router-link>
+      <router-link to="/settings/settings">
+        <font-awesome-icon icon="cog" size="2x"/>
+      </router-link>
+      <router-link to="/feedback">
+        <font-awesome-icon icon="comment" size="2x"/>
+      </router-link>
+
+    </div>
+    <div class="navigation-links">
+      <transition-group name="fade">
+        <div v-show="showLink" key="1">
+          <router-link to="/">Главная</router-link>
+        </div>
+        <div v-show="showLink" key="2">
+          <router-link to="/changeRegion">Выбор города</router-link>
+        </div>
+        <div v-show="showLink" key="3">
+          <router-link to="/settings/settings">Настройки</router-link>
+        </div>
+        <div v-show="showLink" key="4">
+          <router-link to="/feedback">Обратная связь</router-link>
+        </div>
+      </transition-group>
+    </div>
+  </div>
 </template>
 
 <style scoped>
-/* NAV STYLES */
+  .container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    padding: 10px;
+    min-height: calc(100vh - 37px);
+    background-color: rgb(255, 255, 255);
+    border-right: 1px solid #000000;
+    z-index: 999;
+    transition: all 0.5s ease-in-out;
+  }
 
-nav {
-  position: absolute;
-  height: 100vh;
-  width: 70px;
-  border-right: 1px solid #202020;
-  text-align: center;
-}
+  .container .control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    cursor: pointer;
+    margin-bottom: 25px;
+  }
 
-.navChild {
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
+  .container .control svg {
+    margin-top: 10px;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
 
-#navOpen {
-  border-bottom: 1px solid #202020;
-}
+  }
 
-#navFeedback {
-  border-top: 1px solid #202020;
-  margin-top: calc(100vh - 362px);
-}
-.btn {
-  cursor: pointer;
-  color: black;
-  text-decoration: none;
-}
-a {
-  cursor: pointer;
-  color: black;
-  text-decoration: none;
-}
-/* HOME PAGE */
+  .container.show {
+    width: 250px;
+  }
+
+  .container.show .control > svg {
+    transform: rotateZ(-180deg);
+  }
+
+  .container .navigation-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 50px;
+    cursor: pointer;
+    float: left;
+
+  }
+
+  .container .navigation-icons svg {
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+    margin-bottom: 10px;
+  }
+
+  .container .navigation-links {
+    float: left;
+  }
+
+  .container .navigation-links div {
+    margin-top: 5px;
+    font-size: 1.35rem;
+    padding-left: 10px;
+    margin-bottom: 16px;
+    cursor: pointer;
+  }
+
+  .fade-enter-active:nth-child(1), .fade-leave-active:nth-child(1) {
+    transition: transform linear calc(.1s * 1), display 0.5s;
+  }
+
+  .fade-enter-active:nth-child(2), .fade-leave-active:nth-child(2) {
+    transition: transform linear calc(.1s * 2), display 0.5s;
+  }
+
+  .fade-enter-active:nth-child(3), .fade-leave-active:nth-child(3) {
+    transition: transform linear calc(.1s * 3), display 0.5s;
+  }
+
+  .fade-enter-active:nth-child(4), .fade-leave-active:nth-child(4) {
+    transition: transform linear calc(.1s * 4), display 0.5s;
+  }
+
+  .fade-enter-active:nth-child(5), .fade-leave-active:nth-child(5) {
+    transition: transform linear calc(.1s * 5), display 0.5s;
+  }
+
+  .fade-enter, .fade-leave-to {
+    transform: scale(0);
+  }
+
+  a {
+    color: black;
+    text-decoration: none;
+  }
+
+  /* HOME PAGE */
 </style>
 
 <script>
-export default {
-  name: "Nav",
-  methods:{
-    openNav(){
-
+  export default {
+    data: () => {
+      return {
+        showSidebar: false,
+        showLink: false
+      }
+    },
+    methods: {
+      showNav() {
+        if (this.showSidebar) {
+          this.showLink = false
+          setTimeout(() => {
+            this.showSidebar = false
+          }, 500)
+        } else {
+          this.showSidebar = true
+          setTimeout(() => {
+            this.showLink = true
+          }, 500)
+        }
+      }
     }
   }
-};
 </script>

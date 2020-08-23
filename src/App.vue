@@ -9,6 +9,7 @@
   * {
     margin: 0;
     padding: 0;
+    -webkit-user-select: none; /* Google Chrome, Opera Next, Safari */
   }
 
 

@@ -43,9 +43,9 @@ export default {
 
 <style scoped>
 .home {
-  width: calc(100% - 70px);
-  margin-left: 120px;
-  padding-top: 50px;
+  width: calc(100% - 100px);
+  margin-left: 100px;
+  padding-top: 30px;
   font-size: 2rem;
 }
 input {
