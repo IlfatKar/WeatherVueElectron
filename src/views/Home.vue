@@ -22,7 +22,7 @@ main {
 }
 #weather {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: 2fr 1fr;
 }
 </style>
 
@@ -50,6 +50,10 @@ export default {
   async mounted() {
     await this.$store.dispatch("fetchData");
     this.loading = false;
+    if (this.$store.getters.data.cod === '404') {
+      this.$store.commit('setError', 404)
+      await this.$router.push('/changeRegion')
+    }
   },
 };
 </script>

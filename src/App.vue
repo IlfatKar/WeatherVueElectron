@@ -11,11 +11,7 @@
     padding: 0;
   }
 
-  .btn{
-    cursor: pointer;
-    color: black;
-    text-decoration: none;
-  }
+
 
 </style>
 
