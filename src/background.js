@@ -23,8 +23,10 @@ function createWindow() {
     minWidth: 1200,
     minHeight: 600,
     show: false,
-    // autoHideMenuBar: true,
+    frame: false,
+    icon: 'src/assets/icon.png',
     webPreferences: {
+      devTools: false,
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
@@ -55,10 +57,6 @@ function createWindow() {
 app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
-  // const fs = require("fs");
-  // let path = app.getPath('userData');
-  // let store = fs.readFileSync("src/store/index.js");
-  // fs.writeFileSync(path + "/index.js", store, "utf-8");
 
   if (process.platform !== 'darwin') {
     app.quit()
@@ -119,4 +117,7 @@ ipcMain.on('takeState', e => {
   let path = app.getPath('userData')
   let json = fs.readFileSync(path + '/state.json').toString()
   e.sender.send('takedState', json)
+})
+ipcMain.on('exit', e => {
+  app.quit()
 })

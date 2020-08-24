@@ -91,14 +91,14 @@
 <style scoped>
 
   .fade-enter-active, .fade-leave-active {
-    transition: 1s;
+    transition: .5s;
   }
 
   .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
   {
     opacity: 0;
-    transform: translateY(-50px);
-    transition: .5s;
+    transform: translateY(-70px);
+    transition: 1s;
 
   }
 

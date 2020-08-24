@@ -1,9 +1,9 @@
 <template>
   <div class="container" :class="{'show': showSidebar}">
     <div class="control">
-      <font-awesome-icon icon="bars" size="2x" @click="showNav"/>
+      <font-awesome-icon icon="bars" size="2x" @click="showNav" style="-webkit-app-region: no-drag;"/>
     </div>
-    <div class="navigation-icons">
+    <div class="navigation-icons" style="-webkit-app-region: no-drag;">
       <router-link to="/">
         <font-awesome-icon icon="home" size="2x"/>
       </router-link>
@@ -18,7 +18,7 @@
       </router-link>
 
     </div>
-    <div class="navigation-links">
+    <div class="navigation-links" style="-webkit-app-region: no-drag;">
       <transition-group name="fade">
         <div v-show="showLink" key="1">
           <router-link to="/">{{'MainPage' | localize}}</router-link>
@@ -34,10 +34,50 @@
         </div>
       </transition-group>
     </div>
+    <div>
+      <div class="exitDiv">
+        <div class="exit" @click.prevent="exit">
+          <router-link @click.prevent="exit" to="#">
+            <font-awesome-icon icon="door-open" size="2x"/>
+          </router-link>
+        </div>
+        <transition-group name="fade">
+          <div class="exitText" v-show="showLink" key="5" @click.prevent="exit">
+            <router-link to="#" @click.prevent="exit">{{'Exit' | localize}}</router-link>
+          </div>
+        </transition-group>
+      </div>
+
+
+    </div>
   </div>
 </template>
 
 <style scoped>
+  .exitDiv {
+    display: flex;
+    position: absolute;
+    -webkit-app-region: no-drag;
+    bottom: 20px;
+    left: 15px;
+
+  }
+
+  .exitText {
+    position: absolute;
+    margin-top: 5px;
+    font-size: 1.35rem;
+    padding-left: 15px;
+    margin-bottom: 2.3rem;
+    cursor: pointer;
+    -webkit-app-region: no-drag;
+  }
+
+  .exit svg {
+    -webkit-app-region: no-drag;
+    transition: 1s;
+  }
+
   .container {
     position: absolute;
     top: 0;
@@ -101,7 +141,7 @@
     margin-top: 4px;
     font-size: 1.35rem;
     padding-left: 10px;
-    margin-bottom: 2.3rem;
+    margin-bottom: 2.27rem;
     cursor: pointer;
   }
 
@@ -160,6 +200,10 @@
             this.showLink = true
           }, 500)
         }
+      },
+      exit() {
+        console.log('exit')
+        ipcRenderer.send('exit')
       }
     },
     mounted() {

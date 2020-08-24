@@ -1,6 +1,6 @@
 <template>
   <div id="app" v-bind:class="$store.getters.theme">
-    <Nav/>
+    <Nav style="-webkit-app-region: drag;"/>
     <router-view class="view"/>
   </div>
 </template>

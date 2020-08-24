@@ -10,7 +10,8 @@ import {
   faHome,
   faMapMarked,
   faCog,
-  faComment
+  faComment,
+  faDoorOpen
 } from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 import Vuelidate from 'vuelidate'
@@ -19,7 +20,7 @@ import 'firebase/database'
 import localizeFilter from './filters/localize.filter'
 
 
-library.add(faBars, faHome, faMapMarked, faCog, faComment)
+library.add(faBars, faHome, faMapMarked, faCog, faComment, faDoorOpen)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
