@@ -68,7 +68,7 @@
     margin-top: 5px;
     font-size: 1.35rem;
     padding-left: 15px;
-    margin-bottom: 2.3rem;
+    /*margin-bottom: 2.3rem;*/
     cursor: pointer;
     -webkit-app-region: no-drag;
   }
@@ -206,13 +206,5 @@
         ipcRenderer.send('exit')
       }
     },
-    mounted() {
-      ipcRenderer.send('takeState')
-      ipcRenderer.on('takedState', (e, json) => {
-        this.$store.commit('setCity', JSON.parse(json).city || 'Moscow')
-        this.$store.commit('setTheme', JSON.parse(json).theme || 'white')
-        this.$store.commit('setLang', JSON.parse(json).lang || 'ru')
-      })
-    }
   }
 </script>

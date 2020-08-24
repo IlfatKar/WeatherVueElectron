@@ -1,8 +1,8 @@
 'use strict'
-
-import {app, protocol, BrowserWindow, ipcMain} from 'electron'
+import {app, protocol, BrowserWindow, ipcMain, NativeImage as nativeImage} from 'electron'
 import {createProtocol} from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, {VUEJS_DEVTOOLS} from 'electron-devtools-installer'
+import path from 'path'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -24,15 +24,17 @@ function createWindow() {
     minHeight: 600,
     show: false,
     frame: false,
-    icon: 'src/assets/icon.png',
     webPreferences: {
       devTools: false,
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
-    }
+    },
+    icon: path.join(__static, 'icon.png')
   });
   win.setMenu(null)
+
+
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
@@ -41,7 +43,7 @@ function createWindow() {
   } else {
     createProtocol('app')
     // Load the index.html when not in development
-    win.loadURL('app://./index.html')
+    win.loadURL(`file://${__dirname}/index.html`)
   }
 
   win.once('ready-to-show', () => {
@@ -74,6 +76,7 @@ app.on('activate', () => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
+
 app.on('ready', async () => {
   if (isDevelopment && !process.env.IS_TEST) {
     // Install Vue Devtools
@@ -86,6 +89,9 @@ app.on('ready', async () => {
 
   createWindow()
 })
+
+// app.on('ready',createWindow)
+
 
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {
@@ -113,10 +119,15 @@ ipcMain.handle('updateState', (e, args) => {
   fs.writeFileSync(path + '/state.json', obj, 'utf-8')
 })
 
-ipcMain.on('takeState', e => {
-  let path = app.getPath('userData')
-  let json = fs.readFileSync(path + '/state.json').toString()
-  e.sender.send('takedState', json)
+ipcMain.on('takeState', event => {
+  try {
+    let path = app.getPath('userData')
+    let json = fs.readFileSync(path + '/state.json').toString()
+    event.sender.send('takedState', json)
+  } catch (e) {
+    event.sender.send('takedState', '404')
+  }
+
 })
 ipcMain.on('exit', e => {
   app.quit()

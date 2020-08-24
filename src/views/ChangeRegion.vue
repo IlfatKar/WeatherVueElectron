@@ -44,6 +44,10 @@ import {ipcRenderer} from "electron"
         } catch (e) {
           console.error(e)
           this.result = localizeFilter('Error')
+          let city = this.$store.getters.city
+          let theme = this.$store.getters.theme
+          let lang = this.$store.getters.lang
+          await ipcRenderer.invoke('updateState', {city, theme, lang})
           this.loading = false
         }
       }

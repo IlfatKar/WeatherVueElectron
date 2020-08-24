@@ -1,3 +1,4 @@
+import {ipcRenderer} from "electron"
 <template>
   <div class="home">
 <!--    <HomeNav />-->
@@ -32,6 +33,8 @@ import Weather from "../components/Weather";
 import Descr from '../components/Descr'
 import { mapGetters } from "vuex";
 import Loader from '../components/Loader'
+import {ipcRenderer} from 'electron'
+
 export default {
   name: "Home",
   computed: {
@@ -48,13 +51,27 @@ export default {
     HomeNav
   },
   async mounted() {
-    await this.$store.dispatch("fetchData");
-    this.loading = false;
+
+    await ipcRenderer.send('takeState')
+    await ipcRenderer.on('takedState', (e, json) => {
+      if(json !== 404 && JSON.parse(json).city){
+        this.$store.commit('setCity', JSON.parse(json).city)
+        this.$store.commit('setTheme', JSON.parse(json).theme)
+        this.$store.commit('setLang', JSON.parse(json).lang)
+        this.$store.dispatch("fetchData");
+        this.loading = false;
+      } else {
+        this.$store.commit('setTheme', 'white')
+        this.$store.commit('setLang', 'en')
+        this.$store.commit('setError', 404)
+        this.$router.push('/changeRegion')
+      }
+    })
+
     if (this.$store.getters.data.cod === '404') {
       this.$store.commit('setError', 404)
-      await this.$router.push('/changeRegion')
+     await this.$router.push('/changeRegion')
     }
-  },
-
+  }
 };
 </script>
