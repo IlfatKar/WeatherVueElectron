@@ -7,7 +7,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     lang: 'ru',
-    city: 'Kazan',
+    city: '',
     units: 'metric',
     data: {},
     error: null,

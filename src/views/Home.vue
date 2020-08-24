@@ -61,8 +61,6 @@ export default {
         this.$store.dispatch("fetchData");
         this.loading = false;
       } else {
-        this.$store.commit('setTheme', 'white')
-        this.$store.commit('setLang', 'en')
         this.$store.commit('setError', 404)
         this.$router.push('/changeRegion')
       }

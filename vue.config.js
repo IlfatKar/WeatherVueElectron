@@ -8,6 +8,7 @@ module.exports = {
       },
       builderOptions: {
         appId: 'Weather app',
+        productName:"Weather"
         // buildResources: 'build'
 
       }
