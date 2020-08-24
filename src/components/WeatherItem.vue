@@ -3,9 +3,9 @@
     <div>
       <h2>{{ this.date | date }}</h2>
       <div class="dayNight">
-        <p>Температура сейчас: {{ Math.round(this.temps.temp) }}°C</p>
-        <p>Максимальная температура: {{ this.temps.temp_min }}°C</p>
-        <p>Минимальная температура: {{ this.temps.temp_max }}°C</p>
+        <p>{{'TemperatureNow' | localize}}: {{ Math.round(this.temps.temp) }}°C</p>
+        <p>{{'MaximumTemperature' | localize}}: {{ this.temps.temp_min }}°C</p>
+        <p>{{'MinimumTemperature' | localize}}: {{ this.temps.temp_max }}°C</p>
       </div>
       <p class="type">
         {{

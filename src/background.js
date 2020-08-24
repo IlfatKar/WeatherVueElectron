@@ -1,8 +1,8 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
-import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
-import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
+import {app, protocol, BrowserWindow, ipcMain} from 'electron'
+import {createProtocol} from 'vue-cli-plugin-electron-builder/lib'
+import installExtension, {VUEJS_DEVTOOLS} from 'electron-devtools-installer'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -10,10 +10,9 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 // be closed automatically when the JavaScript object is garbage collected.
 let win
 
-
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
-  { scheme: 'app', privileges: { secure: true, standard: true } }
+  {scheme: 'app', privileges: {secure: true, standard: true}}
 ])
 
 function createWindow() {
@@ -23,13 +22,15 @@ function createWindow() {
     height: 768,
     minWidth: 1200,
     minHeight: 600,
+    show: false,
+    // autoHideMenuBar: true,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
     }
-  })
-
+  });
+  win.setMenu(null)
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
@@ -41,6 +42,10 @@ function createWindow() {
     win.loadURL('app://./index.html')
   }
 
+  win.once('ready-to-show', () => {
+    win.show()
+  })
+
   win.on('closed', () => {
     win = null
   })
@@ -50,6 +55,11 @@ function createWindow() {
 app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
+  // const fs = require("fs");
+  // let path = app.getPath('userData');
+  // let store = fs.readFileSync("src/store/index.js");
+  // fs.writeFileSync(path + "/index.js", store, "utf-8");
+
   if (process.platform !== 'darwin') {
     app.quit()
   }
@@ -75,13 +85,14 @@ app.on('ready', async () => {
       console.error('Vue Devtools failed to install:', e.toString())
     }
   }
+
   createWindow()
 })
 
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {
   if (process.platform === 'win32') {
-    process.on('message', (data) => {
+    process.on('message', data => {
       if (data === 'graceful-exit') {
         app.quit()
       }
@@ -93,3 +104,19 @@ if (isDevelopment) {
   }
 }
 
+const fs = require('fs')
+
+app.on('activate', () => {
+})
+ipcMain.handle('updateState', (e, args) => {
+  let path = app.getPath('userData')
+  let obj = JSON.stringify(args)
+
+  fs.writeFileSync(path + '/state.json', obj, 'utf-8')
+})
+
+ipcMain.on('takeState', e => {
+  let path = app.getPath('userData')
+  let json = fs.readFileSync(path + '/state.json').toString()
+  e.sender.send('takedState', json)
+})

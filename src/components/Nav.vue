@@ -21,16 +21,16 @@
     <div class="navigation-links">
       <transition-group name="fade">
         <div v-show="showLink" key="1">
-          <router-link to="/">Главная</router-link>
+          <router-link to="/">{{'MainPage' | localize}}</router-link>
         </div>
         <div v-show="showLink" key="2">
-          <router-link to="/changeRegion">Выбор города</router-link>
+          <router-link to="/changeRegion">{{'ChangeCity' | localize}}</router-link>
         </div>
         <div v-show="showLink" key="3">
-          <router-link to="/settings/settings">Настройки</router-link>
+          <router-link to="/settings/settings">{{'Settings' | localize}}</router-link>
         </div>
         <div v-show="showLink" key="4">
-          <router-link to="/feedback">Обратная связь</router-link>
+          <router-link to="/feedback">{{'Feedback' | localize}}</router-link>
         </div>
       </transition-group>
     </div>
@@ -44,8 +44,8 @@
     left: 0;
     width: 50px;
     padding: 10px;
-    min-height: calc(100vh - 37px);
-    background-color: rgb(255, 255, 255);
+    min-height: calc(100vh - 20px);
+    /*background-color: rgb(255, 255, 255);*/
     border-right: 1px solid #000000;
     z-index: 999;
     transition: all 0.5s ease-in-out;
@@ -90,7 +90,7 @@
   .container .navigation-icons svg {
     cursor: pointer;
     transition: all 0.5s ease-in-out;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
   }
 
   .container .navigation-links {
@@ -98,10 +98,10 @@
   }
 
   .container .navigation-links div {
-    margin-top: 5px;
+    margin-top: 4px;
     font-size: 1.35rem;
     padding-left: 10px;
-    margin-bottom: 16px;
+    margin-bottom: 2.3rem;
     cursor: pointer;
   }
 
@@ -138,6 +138,8 @@
 </style>
 
 <script>
+  import {ipcRenderer} from 'electron'
+
   export default {
     data: () => {
       return {
@@ -159,6 +161,14 @@
           }, 500)
         }
       }
+    },
+    mounted() {
+      ipcRenderer.send('takeState')
+      ipcRenderer.on('takedState', (e, json) => {
+        this.$store.commit('setCity', JSON.parse(json).city || 'Moscow')
+        this.$store.commit('setTheme', JSON.parse(json).theme || 'white')
+        this.$store.commit('setLang', JSON.parse(json).lang || 'ru')
+      })
     }
   }
 </script>

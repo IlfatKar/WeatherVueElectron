@@ -2,7 +2,7 @@
   <div class="home">
 <!--    <HomeNav />-->
     <main v-if="!this.loading">
-      <h1>Погода в городе {{this.data.name}}</h1>
+      <h1>{{'WeatherIn' | localize}}{{this.data.name}}</h1>
       <div id="weather">
         <Weather :temps="this.data.main" :weather="this.data.weather"/>
         <Descr :main="this.data.main" :wind="this.data.wind"/>
@@ -55,5 +55,6 @@ export default {
       await this.$router.push('/changeRegion')
     }
   },
+
 };
 </script>

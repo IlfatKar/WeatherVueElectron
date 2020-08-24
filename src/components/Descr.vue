@@ -1,8 +1,9 @@
 <template>
   <div>
-    <p>Ветер: {{this.wind.speed}} м/с. С углом в {{this.wind.deg}}°</p>
-    <p>Давление: {{Math.floor(this.main.pressure * 0.75006375541921)}} мм. ртутного столба</p>
-    <p>Влажность: {{this.main.humidity}}%</p>
+    <p>{{'Wind' | localize}}: {{this.wind.speed}} {{'m/s' | localize}}. {{'Angle' | localize}} {{this.wind.deg}}°</p>
+    <p>{{'Pressure' | localize}}: {{Math.floor(this.main.pressure * 0.75006375541921)}} {{'mm' | localize}}
+      {{'OfMercury' | localize}}</p>
+    <p>{{'Humidity' | localize}}: {{this.main.humidity}}%</p>
   </div>
 </template>
 
